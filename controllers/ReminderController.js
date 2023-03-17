@@ -2,7 +2,10 @@ const jwt = require("jsonwebtoken");
 const ReminderModel = require("../models/ReminderModel");
 
 const CreateReminder = async (req, res) => {
-  const token = req.header("Authorization").replace("Bearer ", "");
+  const token = req
+    .header("Authorization")
+    .replace("Bearer ", "")
+    .replaceAll('"', "");
   const decoded = jwt.verify(token, process.env.JWT_SK);
   const setBy = decoded.user._id;
 
