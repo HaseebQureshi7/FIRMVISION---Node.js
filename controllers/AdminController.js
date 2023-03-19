@@ -57,7 +57,8 @@ const LoginAdmin = async (req, res) => {
       if (!user) {
         res.status(400).send("Invalid Login Data");
       } else {
-        res.status(200).send(user);
+        const token = jwt.sign(JSON.stringify({ user }), process.env.JWT_SK);
+        res.status(200).json({ user, token });
       }
     } catch (err) {
       res.status(400).send(err);
@@ -73,6 +74,22 @@ const LoginAdmin = async (req, res) => {
       const token = jwt.sign(JSON.stringify({ user }), process.env.JWT_SK);
       res.status(200).json({ user, token });
     }
+  }
+};
+
+// LOGIN WITH GOOGLE
+const GoogleLoginAdmin = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await AdminModel.findOne({ email }).select("-password");
+    if (!user) {
+      res.status(400).send("Invalid Login Data");
+    } else {
+      const token = jwt.sign(JSON.stringify({ user }), process.env.JWT_SK);
+      res.status(200).json({ user, token });
+    }
+  } catch (err) {
+    res.status(400).send(err);
   }
 };
 
@@ -188,6 +205,7 @@ const GetReminders = async (req, res) => {
 module.exports = {
   SignupAdmin,
   LoginAdmin,
+  GoogleLoginAdmin,
   EditProfile,
   AddEmployee,
   GetEmployees,
