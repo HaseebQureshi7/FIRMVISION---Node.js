@@ -95,7 +95,10 @@ const GoogleLoginAdmin = async (req, res) => {
 
 // EDIT PROFILE
 const EditProfile = async (req, res) => {
-  const token = req.header("Authorization").replace("Bearer ", "");
+  const token = req
+    .header("Authorization")
+    .replace("Bearer ", "")
+    .replaceAll('"', "");
   const decoded = jwt.verify(token, process.env.JWT_SK);
   const uid = decoded.user._id;
   try {
