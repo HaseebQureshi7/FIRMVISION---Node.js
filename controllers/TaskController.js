@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const TaskModel = require("../models/TaskModel");
 
 const CreateTask = async (req, res) => {
-  const token = req.header("Authorization").replace("Bearer ", "");
+  const token = req.header("Authorization").replace("Bearer ", "").replaceAll('"', "");
   const decoded = jwt.verify(token, process.env.JWT_SK);
   const assignedBy = decoded.user._id;
 
@@ -40,7 +40,8 @@ const UpdateTask = async (req, res) => {
 
 // ONLY GET ONE EMPLOYEE'S TASKS
 const ViewEmployeesTasks = async (req, res) => {
-  const token = req.header("Authorization").replace("Bearer ", "");
+  // const eid = req.params.eid;
+  const token = req.header("Authorization").replace("Bearer ", "").replaceAll('"', "");
   const decoded = jwt.verify(token, process.env.JWT_SK);
   const assignedTo = decoded.user._id;
 
@@ -50,7 +51,7 @@ const ViewEmployeesTasks = async (req, res) => {
 
 // GET ALL TASKS ASSIGNED BY THE ADMIN
 const ViewAssignedAdminTasks = async (req, res) => {
-  const token = req.header("Authorization").replace("Bearer ", "");
+  const token = req.header("Authorization").replace("Bearer ", "").replaceAll('"', "");
   const decoded = jwt.verify(token, process.env.JWT_SK);
   const assignedBy = decoded.user._id;
 
