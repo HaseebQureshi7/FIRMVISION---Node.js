@@ -75,8 +75,29 @@ const EditProfile = async (req, res) => {
   }
 };
 
+// GET TEAM
+const GetTeam = async (req, res) => {
+  const token = req
+    .header("Authorization")
+    .replace("Bearer ", "")
+    .replaceAll('"', "");
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SK);
+    const employeeOf = decoded.user.employeeOf;
+    const employees = await EmployeeModel.find({ employeeOf });
+    if (employees.length > 0) {
+      res.status(200).json(employees);
+    } else {
+      res.status(204).send("No Employees Found!");
+    }
+  } catch {
+    res.status(401).send("Invalid Token!");
+  }
+};
+
 module.exports = {
   SignupEmployee,
   LoginEmployee,
   EditProfile,
+  GetTeam,
 };
