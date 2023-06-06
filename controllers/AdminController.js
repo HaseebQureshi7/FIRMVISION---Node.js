@@ -151,7 +151,9 @@ const GetEmployees = async (req, res) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SK);
     const adminId = decoded.user._id;
-    const employees = await EmployeeModel.find({ employeeOf: adminId });
+    const employees = await EmployeeModel.find({ employeeOf: adminId }).select(
+      "-password"
+    );
     if (employees.length > 0) {
       res.status(200).json(employees);
     } else {
