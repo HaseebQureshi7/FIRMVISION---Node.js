@@ -16,7 +16,7 @@ const SignupEmployee = async (req, res) => {
       if (newEmployee) {
         const { password, ...user } = newEmployee.toObject();
         const token = jwt.sign(JSON.stringify({ user }), process.env.JWT_SK);
-        res.status(201).json(token);
+        res.status(201).json({ user, token });
       } else {
         res.status(400).send("Employee not created!");
       }
@@ -60,7 +60,10 @@ const LoginEmployee = async (req, res) => {
 
 // EDIT PROFILE
 const EditProfile = async (req, res) => {
-  const token = req.header("Authorization").replace("Bearer ", "").replaceAll('"', "");
+  const token = req
+    .header("Authorization")
+    .replace("Bearer ", "")
+    .replaceAll('"', "");
   const decoded = jwt.verify(token, process.env.JWT_SK);
   const uid = decoded.user._id;
   try {

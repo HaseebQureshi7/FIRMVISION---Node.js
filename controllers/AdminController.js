@@ -126,7 +126,7 @@ const AddEmployee = async (req, res) => {
         from: gMail,
         to: employeeEmail,
         subject: `Invitation Link from ${companyName}`,
-        html: `<h3>Hi ${employeeName}<h3/><h4>${adminName} has sent you a joining link, click the link below to join team.<h4/> <h4>Click <a href=${url}>here</a> to join the team</h4>`,
+        html: `<h2>Hi ${employeeName} <h2/><h4>${adminName} has sent you a joining link, click the link below to join team.<h4/> <h4>Click <a href=${url}>here</a> to join the team</h4>`,
       };
       GMailTransport.sendMail(mailData, (err) => {
         if (err) {
@@ -205,6 +205,21 @@ const GetReminders = async (req, res) => {
   }
 };
 
+const GetAdminDetails = async (req, res) => {
+  try {
+    const user = await AdminModel.findOne({ _id: req.params.uid }).select(
+      "-password"
+    );
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(401).send("No user found!");
+    }
+  } catch {
+    res.status(400).send("Fatal Error!");
+  }
+};
+
 module.exports = {
   SignupAdmin,
   LoginAdmin,
@@ -214,4 +229,5 @@ module.exports = {
   GetEmployees,
   GetAllAssignedTasks,
   GetReminders,
+  GetAdminDetails,
 };

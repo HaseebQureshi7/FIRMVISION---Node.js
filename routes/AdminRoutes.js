@@ -8,6 +8,7 @@ const {
   GetAllAssignedTasks,
   GetReminders,
   GoogleLoginAdmin,
+  GetAdminDetails,
 } = require("../controllers/AdminController");
 const AuthMiddleware = require("../middlewares/AuthMiddleware");
 
@@ -19,6 +20,7 @@ AdminRouter.route("/loginwithgoogle").post(GoogleLoginAdmin);
 AdminRouter.route("/editprofile").put(AuthMiddleware, EditProfile);
 AdminRouter.route("/addemployee").post(AuthMiddleware, AddEmployee);
 AdminRouter.route("/getemployees").post(AuthMiddleware, GetEmployees);
+AdminRouter.route("/getadmindetails/:uid").post(GetAdminDetails);
 AdminRouter.route("/getallassignedtasks").post(
   AuthMiddleware,
   GetAllAssignedTasks
