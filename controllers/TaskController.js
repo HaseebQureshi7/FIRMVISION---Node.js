@@ -31,7 +31,7 @@ const UpdateTask = async (req, res) => {
       { _id: tid },
       { $set: req.body },
       { new: true, runValidators: true }
-    ).select("-password");
+    );
     res.status(200).json(updatedTask);
   } catch (err) {
     res.status(400).json({ message: err.message });
